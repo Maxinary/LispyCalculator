@@ -97,3 +97,48 @@ if __name__ == '__main__':
     assert Parser('').eval_node('(- 2 2)') == 0.0
     assert Parser('').eval_node('(* 2 2)') == 4.0
     assert Parser('').eval_node('(/ 2 2)') == 1.0
+
+    eq = '(+ (+ 1 1) (+ 2 1))'
+
+    # Gets [[3, '('], [9, ')'], [11, '('], [17, ')']] from code
+    parens = [
+        [i, v]
+        for i, v in enumerate(eq) if v in '()'
+    ]
+
+    # Gets a a list of tuples for each node where said
+    # tuple has a a list with an index position and symbol
+    # like [([3, '('], [9, ')']), ([11, '('], [17, ')'])]
+    non_nested_nodes = [
+        (parens[i], parens[i+1])
+        for i in range(len(parens))
+            if i < len(parens)
+            and parens[i][1] == '('
+            and parens[i+1][1] == ')'
+    ]
+
+    print(parens)
+    print(non_nested_nodes)
+
+    for i in non_nested_nodes:
+        print(''.join(
+            i for i in eq
+        ))
+        print(Parser('').eval_node(eq[i[0][0]: i[1][0]]))
+
+        # I just need to be able to put the evaled non nested nodes into the orginal eqaution
+
+    """
+    nnn = non_nested_nodes
+
+    for i in range(len(non_nested_nodes)):
+
+        # gets olny one (+ 1 1) atm
+        # get sets of nodes and sub strings
+        if i % 2 == 0:
+            start = nnn
+            end = nnn[i+1][0]
+            print(
+                eq[[i][0]: -[i+1][0]]
+            )
+    """
